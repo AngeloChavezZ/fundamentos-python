@@ -1,3 +1,4 @@
+# Control de cadena de frio - lotes de reactivos
 lote ={
     "codigo": "RD-471",
     "producto": "Reactivo Glucosa",
