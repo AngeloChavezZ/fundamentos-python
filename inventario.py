@@ -37,3 +37,43 @@ for lote in lotes:
     estado_temp = "BLOQUEADO" if lote["temperatura"] > 8 else "OK"
     estado_venc = revisar_caducidad(lote["vence"], 30)
     print(lote["codigo"], "|", lote["producto"], "| temp:", estado_temp, "| caducidad:", estado_venc)
+
+def accion_temperatura(temperatura, limite):
+    if temperatura > limite:
+        return "MOVER A CAMARA DE FRIO"
+    else:
+        return "EN RANGO"
+
+def accion_caducidad(fecha_vencimiento, dias_alerta):
+    estado = revisar_caducidad(fecha_vencimiento, dias_alerta)
+
+    if estado == "VENCIDO":
+        return "DAR DE BAJA"
+    elif estado == "POR VENCER":
+        return "DESPACHAR PRIMERO"
+    else:
+        return "SIN ACCION"
+
+
+for lote in lotes:
+    print(lote["codigo"], "|", lote["producto"])
+    print("temperatura:", accion_temperatura(lote["temperatura"], 8))
+    print("caducidad:", accion_caducidad(lote["vence"], 30))
+    print()
+
+def accion_del_lote(lote, limite, dias_alerta):
+    estado = revisar_caducidad(lote["vence"], dias_alerta)
+
+    if estado == "VENCIDO":
+        return "DAR DE BAJA"
+
+    if lote["temperatura"] > limite:
+        return "MOVER A CAMARA DE FRIO"
+
+    if estado == "POR VENCER":
+        return "DESPACHAR PRIMERO"
+
+    return "SIN ACCION"
+
+for lote in lotes:
+    print(lote["codigo"], "|", lote["producto"], "->", accion_del_lote(lote, 8, 30))
